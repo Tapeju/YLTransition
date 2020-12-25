@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
     s.name         = "YLTransition"
-    s.version      = "1.0.0"
+    s.version      = "1.0.1"
     s.summary      = "自定义转场动画"
     s.description  = <<-DESC
                     几行条码即可添加自定义转场动画
@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
     s.homepage     = "https://github.com/Tapeju/YLTransition.git"
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
     s.author           = { 'Destiny' => '673795524@qq.com' }
-    s.source           = { :git => 'git@github.com:Tapeju/YLTransition.git', :tag => s.version.to_s }
+    s.source           = { :git => 'https://github.com/Tapeju/YLTransition.git', :tag => s.version.to_s }
     s.ios.deployment_target = '11.0'
     s.source_files = 'YLTransition/*.{h,m}'
 
