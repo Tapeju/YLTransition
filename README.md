@@ -2,6 +2,25 @@
 
 YLTransition是一个用于动画、非交互式和交互式ViewController Present和Dismiss的库
 
+<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.46.59.gif?raw=true" width="80" style="display: block;
+  float: left"><img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.47.27.gif?raw=true" width="80" style="display: block;
+  float: left">
+
+<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.48.16.gif?raw=true" width="80" style="display: block;
+  float: left">
+
+<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.49.40.gif?raw=true" width="80" style="display: block;
+  float: left">
+
+<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.48.51.gif?raw=true" width="80" style="display: block;
+  float: left">
+
+<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.49.59.gif?raw=true" width="80" style="display: block;
+  float: left">
+
+<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.50.33.gif?raw=true" width="80" style="display: block;
+  float: left">
+
 ## 使用
 
 ```objective-c
@@ -117,8 +136,7 @@ YLTransition内部的动画效果如果无法满足你的个性化需求, 可用
 
 ## 作者
 
-PJTang, [@PJTang](673795524@qq.com)
-
+673795524@qq.com
 
 ## 许可
 
