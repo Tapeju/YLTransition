@@ -21,8 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 动画时间 如果设置0 则默认0.3
 @property (nonatomic, assign) CGFloat duration;
 
-/// 弹出控制器动画类型
-@property (nonatomic, assign) YLTransitionAnimationType animationType;
+@property (nonatomic, assign) YLAlignment viewAlignment;
+
+@property (nonatomic) UIEdgeInsets viewEdgeInsets;
 
 @end
 

@@ -13,7 +13,6 @@
 
 @property (nonatomic, weak) id<UIViewControllerContextTransitioning> transitionContext;
 @property (nonatomic, strong) YLDirectionAbstractPanGesTureRecognizer *gestureRecognizer;
-@property (nonatomic, assign) YLTransitionAnimationType direction;
 
 @property (nonatomic, assign) CGFloat panLocationStart;
 
@@ -21,17 +20,16 @@
 
 @implementation YLDismissInteractiveTransition
 
-- (instancetype)initWithGestureRecognizer:(YLDirectionAbstractPanGesTureRecognizer *)gestureRecognizer directionForDragging:(YLTransitionAnimationType)direction {
+- (instancetype)initWithGestureRecognizer:(YLDirectionAbstractPanGesTureRecognizer *)gestureRecognizer {
     self = [super init];
     if (self) {
         _gestureRecognizer = gestureRecognizer;
-        _direction = direction;
     }
     return self;
 }
 
 - (instancetype)init {
-    @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Use -initWithGestureRecognizer:edgeForDragging:" userInfo:nil];
+    @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Use -initWithGestureRecognizer:" userInfo:nil];
 }
 
 - (void)dealloc {
@@ -65,7 +63,7 @@
     CGPoint location = [gesture locationInView:fromView.window];
     
     location = CGPointApplyAffineTransform(location, CGAffineTransformInvert(gesture.view.transform));
-    if (self.direction == YLAnimationTypeTranslationBottom || self.direction == YLAnimationTypeTranslationTop) {
+    if (self.direction == YLAlignment_Bottom || self.direction == YLAlignment_Top || self.direction == YLAlignment_Center) {
         self.panLocationStart = location.y;
     } else {
         self.panLocationStart = location.x;
@@ -80,14 +78,16 @@
     location = CGPointApplyAffineTransform(location, CGAffineTransformInvert(gesture.view.transform));
     
     CGFloat animationRatio = 0;
-    if (self.direction == YLAnimationTypeTranslationBottom) {
+    if (self.direction == YLAlignment_Bottom) {
         animationRatio = (location.y - self.panLocationStart) / (CGRectGetHeight(fromView.bounds));
-    } else if (self.direction == YLAnimationTypeTranslationLeft) {
+    } else if (self.direction == YLAlignment_Left) {
         animationRatio = (self.panLocationStart - location.x) / (CGRectGetWidth(fromView.bounds));
-    } else if (self.direction == YLAnimationTypeTranslationRight) {
+    } else if (self.direction == YLAlignment_Right) {
         animationRatio = (location.x - self.panLocationStart) / (CGRectGetWidth(fromView.bounds));
-    } else if (self.direction == YLAnimationTypeTranslationTop) {
+    } else if (self.direction == YLAlignment_Top) {
         animationRatio = (self.panLocationStart - location.y) / (CGRectGetHeight(fromView.bounds));
+    } else if (self.direction == YLAlignment_Center) {
+        animationRatio = (location.y - self.panLocationStart) / (CGRectGetHeight(fromView.bounds));
     }
     
     return animationRatio;
@@ -108,17 +108,17 @@
     
     CGFloat velocityForSelectedDirection;
     
-    if (self.direction == YLAnimationTypeTranslationBottom || self.direction == YLAnimationTypeTranslationTop) {
+    if (self.direction == YLAlignment_Bottom || self.direction == YLAlignment_Top) {
         velocityForSelectedDirection = velocity.y;
     } else {
         velocityForSelectedDirection = velocity.x;
     }
 
     if (velocityForSelectedDirection > 100 &&
-        (self.direction == YLAnimationTypeTranslationRight || self.direction == YLAnimationTypeTranslationBottom)) {
+        (self.direction == YLAlignment_Right || self.direction == YLAlignment_Bottom)) {
         [self finishInteractiveTransition];
     } else if (velocityForSelectedDirection < -100 &&
-               (self.direction == YLAnimationTypeTranslationLeft || self.direction == YLAnimationTypeTranslationTop)) {
+               (self.direction == YLAlignment_Left || self.direction == YLAlignment_Top  || self.direction == YLAlignment_Center)) {
         [self finishInteractiveTransition];
     } else {
         [self cancelInteractiveTransition];

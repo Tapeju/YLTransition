@@ -20,6 +20,10 @@
 		E6672D752595C7F70030A2A0 /* YLTopPanGesTureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6672D622595C7F60030A2A0 /* YLTopPanGesTureRecognizer.m */; };
 		E6672D762595C7F70030A2A0 /* YLRightPanGesTureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = E6672D652595C7F60030A2A0 /* YLRightPanGesTureRecognizer.m */; };
 		E6672D772595C7F70030A2A0 /* UIView+YLEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = E6672D692595C7F60030A2A0 /* UIView+YLEffect.m */; };
+		E67F28B22599DEB20025070D /* CustomAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = E67F28B12599DEB20025070D /* CustomAnimator.m */; };
+		E67F28B8259B072A0025070D /* CustomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E67F28B7259B072A0025070D /* CustomViewController.m */; };
+		E67F28C1259B0FC50025070D /* CenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E67F28C0259B0FC50025070D /* CenterViewController.m */; };
+		E67F28C7259B10690025070D /* BottomScrollViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E67F28C6259B10690025070D /* BottomScrollViewController.m */; };
 		E6A24B60259474610098F478 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A24B5F259474610098F478 /* AppDelegate.m */; };
 		E6A24B66259474610098F478 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6A24B65259474610098F478 /* ViewController.m */; };
 		E6A24B6B259474630098F478 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6A24B6A259474630098F478 /* Assets.xcassets */; };
@@ -80,6 +84,14 @@
 		E6672D682595C7F60030A2A0 /* UIView+YLEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+YLEffect.h"; sourceTree = "<group>"; };
 		E6672D692595C7F60030A2A0 /* UIView+YLEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+YLEffect.m"; sourceTree = "<group>"; };
 		E6672D852595C8E90030A2A0 /* YLTransition.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLTransition.h; sourceTree = "<group>"; };
+		E67F28B02599DEB20025070D /* CustomAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomAnimator.h; sourceTree = "<group>"; };
+		E67F28B12599DEB20025070D /* CustomAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomAnimator.m; sourceTree = "<group>"; };
+		E67F28B6259B072A0025070D /* CustomViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CustomViewController.h; sourceTree = "<group>"; };
+		E67F28B7259B072A0025070D /* CustomViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CustomViewController.m; sourceTree = "<group>"; };
+		E67F28BF259B0FC50025070D /* CenterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CenterViewController.h; sourceTree = "<group>"; };
+		E67F28C0259B0FC50025070D /* CenterViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CenterViewController.m; sourceTree = "<group>"; };
+		E67F28C5259B10690025070D /* BottomScrollViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BottomScrollViewController.h; sourceTree = "<group>"; };
+		E67F28C6259B10690025070D /* BottomScrollViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BottomScrollViewController.m; sourceTree = "<group>"; };
 		E6A24B5B259474610098F478 /* demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = demo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E6A24B5E259474610098F478 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		E6A24B5F259474610098F478 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -238,18 +250,26 @@
 				E6A24B65259474610098F478 /* ViewController.m */,
 				E6DFDF1C2594832200E6245C /* PresentedViewController.h */,
 				E6DFDF1D2594832200E6245C /* PresentedViewController.m */,
+				E67F28BF259B0FC50025070D /* CenterViewController.h */,
+				E67F28C0259B0FC50025070D /* CenterViewController.m */,
 				E6DFDF4A259488B200E6245C /* TopViewController.h */,
 				E6DFDF4B259488B200E6245C /* TopViewController.m */,
 				E6DFDF50259488BB00E6245C /* BottomViewController.h */,
 				E6DFDF51259488BB00E6245C /* BottomViewController.m */,
+				E67F28C5259B10690025070D /* BottomScrollViewController.h */,
+				E67F28C6259B10690025070D /* BottomScrollViewController.m */,
 				E6DFDF56259488C300E6245C /* LeftViewController.h */,
 				E6DFDF57259488C300E6245C /* LeftViewController.m */,
 				E6DFDF5C259488CA00E6245C /* RightViewController.h */,
 				E6DFDF5D259488CA00E6245C /* RightViewController.m */,
+				E67F28B6259B072A0025070D /* CustomViewController.h */,
+				E67F28B7259B072A0025070D /* CustomViewController.m */,
 				E6A24B6A259474630098F478 /* Assets.xcassets */,
 				E6A24B6C259474630098F478 /* LaunchScreen.storyboard */,
 				E6A24B6F259474630098F478 /* Info.plist */,
 				E6A24B70259474630098F478 /* main.m */,
+				E67F28B02599DEB20025070D /* CustomAnimator.h */,
+				E67F28B12599DEB20025070D /* CustomAnimator.m */,
 			);
 			path = demo;
 			sourceTree = "<group>";
@@ -407,6 +427,7 @@
 				E6DFDF5E259488CA00E6245C /* RightViewController.m in Sources */,
 				E6DFDF4C259488B200E6245C /* TopViewController.m in Sources */,
 				E6672D6C2595C7F70030A2A0 /* YLTransformAnimator.m in Sources */,
+				E67F28B8259B072A0025070D /* CustomViewController.m in Sources */,
 				E6672D732595C7F70030A2A0 /* YLDirectionAbstractPanGesTureRecognizer.m in Sources */,
 				E6DFDF58259488C300E6245C /* LeftViewController.m in Sources */,
 				E6A24B71259474630098F478 /* main.m in Sources */,
@@ -416,7 +437,10 @@
 				E6672D6B2595C7F70030A2A0 /* YLAbstractAnimator.m in Sources */,
 				E6672D762595C7F70030A2A0 /* YLRightPanGesTureRecognizer.m in Sources */,
 				E6672D712595C7F70030A2A0 /* YLDismissInteractiveTransition.m in Sources */,
+				E67F28C1259B0FC50025070D /* CenterViewController.m in Sources */,
 				E6672D6F2595C7F70030A2A0 /* YLModalTransitionManager.m in Sources */,
+				E67F28B22599DEB20025070D /* CustomAnimator.m in Sources */,
+				E67F28C7259B10690025070D /* BottomScrollViewController.m in Sources */,
 				E6672D6D2595C7F70030A2A0 /* YLTranslationAnimator.m in Sources */,
 				E6672D722595C7F70030A2A0 /* YLLeftPanGesTureRecognizer.m in Sources */,
 				E6DFDF52259488BB00E6245C /* BottomViewController.m in Sources */,

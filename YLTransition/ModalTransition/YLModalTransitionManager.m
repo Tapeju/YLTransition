@@ -19,6 +19,7 @@
 #import "YLTopPanGesTureRecognizer.h"
 #import "YLBottomPanGesTureRecognizer.h"
 #import "UIView+YLEffect.h"
+#import "YLTransitionAnimationType.h"
 
 @interface YLModalTransitionManager () <UIGestureRecognizerDelegate>
 
@@ -57,7 +58,7 @@
             if (!self.rectCorner) {
                 self.rectCorner = UIRectCornerAllCorners;
             }
-            [presentationRoundedCornerView yl_bezierPathRadius:self.radius corner:self.rectCorner];
+            [presentationRoundedCornerView yl_radiusWithRadius:self.radius corner:self.rectCorner];
         }
         
         UIView *presentedViewControllerWrapperView = [[UIView alloc] initWithFrame:UIEdgeInsetsInsetRect(presentationRoundedCornerView.bounds, UIEdgeInsetsMake(0, 0, 0, 0))];
@@ -123,10 +124,41 @@
 }
 
 
-#pragma mark - Action
+#pragma mark - Private
 - (void)dimmingViewTapped:(UITapGestureRecognizer *)sender {
     self.interactiveEnable = NO;
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
+}
+
+- (void)addGestureRecognizerForModalController {
+    YLDirectionAbstractPanGesTureRecognizer *ges;
+    switch (self.viewAlignment) {
+        case YLAlignment_Left:
+            ges = [[YLLeftPanGesTureRecognizer alloc] init];
+            break;
+        case YLAlignment_Right:
+            ges = [[YLRightPanGesTureRecognizer alloc] init];
+            break;
+        case YLAlignment_Top:
+            ges = [[YLTopPanGesTureRecognizer alloc] init];
+            break;
+        default:
+            ges = [[YLBottomPanGesTureRecognizer alloc] init];
+            break;
+    }
+    __weak __typeof(self)weakSelf = self;
+    ges.dismissBlock = ^{
+        weakSelf.interactiveEnable = YES;
+        [weakSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    self.dismissGesture = ges;
+    self.dismissGesture.agent = self;
+    _dismissInteractive = [[YLDismissInteractiveTransition alloc] initWithGestureRecognizer:self.dismissGesture];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wundeclared-selector"
+    [self.dismissGesture addTarget:_dismissInteractive action:@selector(gestureRecognizeDidUpdate:)];
+#pragma clang diagnostic pop
+    [self.presentedViewController.view addGestureRecognizer:self.dismissGesture];
 }
 
 - (void)removeGestureRecognizerFromModalController {
@@ -136,40 +168,73 @@
     }
 }
 
+- (void)bindingAnimationTypeToViewAlignment {
+    switch (self.animationType) {
+        case YLAnimationTypeTranslationBottom:
+            self.viewAlignment = YLAlignment_Bottom;
+            break;
+
+        case YLAnimationTypeTranslationRight:
+            self.viewAlignment = YLAlignment_Right;
+            break;
+
+        case YLAnimationTypeTransformCenter:
+            self.viewAlignment = YLAlignment_Center;
+            break;
+            
+        case YLAnimationTypeTranslationLeft:
+            self.viewAlignment = YLAlignment_Left;
+            break;
+            
+        default:
+            self.viewAlignment = YLAlignment_Top;
+            break;
+    }
+}
+
+- (CGRect)updateFrameForContainerView {
+    CGPoint origin = self.presentedView.frame.origin;
+    CGSize  newSize = self.frameOfPresentedViewInContainerView.size;
+
+    
+    switch (self.viewAlignment) {
+        case YLAlignment_Center:
+            origin.x = (CGRectGetWidth(self.containerView.frame) - newSize.width) / 2 + self.viewEdgeInsets.left;
+            origin.y = (CGRectGetHeight(self.containerView.frame) - newSize.height) / 2 + self.viewEdgeInsets.top;
+            break;
+            
+        case YLAlignment_Left:
+            origin.x = self.viewEdgeInsets.left;
+            origin.y = self.viewEdgeInsets.top;
+            break;
+            
+        case YLAlignment_Bottom:
+            origin.x = self.viewEdgeInsets.left;
+            origin.y = (CGRectGetHeight(self.containerView.frame) - newSize.height) - self.viewEdgeInsets.bottom;
+            break;
+            
+        case YLAlignment_Right:
+            origin.x = (CGRectGetWidth(self.containerView.frame) - newSize.width) - self.viewEdgeInsets.right;
+            origin.y = self.viewEdgeInsets.top;
+            break;
+            
+        case YLAlignment_Top:
+            origin.x = self.viewEdgeInsets.left;
+            origin.y = self.viewEdgeInsets.top;
+            break;
+            
+        default:
+            break;
+    }
+    return CGRectMake(origin.x, origin.y, newSize.width, newSize.height);
+}
+
 #pragma mark - Set
 - (void)setDragable:(BOOL)dragable {
     _dragable = dragable;
     if (_dragable) {
         [self removeGestureRecognizerFromModalController];
-        
-        YLDirectionAbstractPanGesTureRecognizer *ges;
-        switch (self.animationType) {
-            case YLAnimationTypeTranslationLeft:
-                ges = [[YLLeftPanGesTureRecognizer alloc] init];
-                break;
-            case YLAnimationTypeTranslationRight:
-                ges = [[YLRightPanGesTureRecognizer alloc] init];
-                break;
-            case YLAnimationTypeTranslationTop:
-                ges = [[YLTopPanGesTureRecognizer alloc] init];
-                break;
-            default:
-                ges = [[YLBottomPanGesTureRecognizer alloc] init];
-                break;
-        }
-        __weak __typeof(self)weakSelf = self;
-        ges.dismissBlock = ^{
-            weakSelf.interactiveEnable = YES;
-            [weakSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-        };
-        self.dismissGesture = ges;
-        self.dismissGesture.agent = self;
-        _dismissInteractive = [[YLDismissInteractiveTransition alloc] initWithGestureRecognizer:self.dismissGesture directionForDragging:self.animationType];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-        [self.dismissGesture addTarget:_dismissInteractive action:@selector(gestureRecognizeDidUpdate:)];
-#pragma clang diagnostic pop
-        [self.presentedViewController.view addGestureRecognizer:self.dismissGesture];
+        [self addGestureRecognizerForModalController];
     } else {
         [self removeGestureRecognizerFromModalController];
     }
@@ -180,6 +245,18 @@
         self.dragable = YES;
     }
     self.dismissGesture.scrollview = scrollView;
+}
+
+- (void)setAnimationType:(YLTransitionAnimationType)animationType {
+    _animationType = animationType;
+    [self bindingAnimationTypeToViewAlignment];
+}
+
+- (void)setViewAlignment:(YLAlignment)viewAlignment {
+    _viewAlignment = viewAlignment;
+    if (self.isDragable) {
+        _dragable = YES;
+    }
 }
 
 #pragma mark - Gesture Delegate
@@ -201,16 +278,6 @@
 }
 
 #pragma mark - UIViewController
-//  When the presentation controller receives a
-//  -viewWillTransitionToSize:withTransitionCoordinator: message it calls this
-//  method to retrieve the new size for the presentedViewController's view.
-//  The presentation controller then sends a
-//  -viewWillTransitionToSize:withTransitionCoordinator: message to the
-//  presentedViewController with this size as the first argument.
-//
-//  Note that it is up to the presentation controller to adjust the frame
-//  of the presented view controller's view to match this promised size.
-//  We do this in -containerViewWillLayoutSubviews.
 - (CGSize)sizeForChildContentContainer:(id<UIContentContainer>)container withParentContainerSize:(CGSize)parentSize {
     if (container == self.presentedViewController)
         return ((UIViewController*)container).preferredContentSize;
@@ -218,9 +285,6 @@
         return [super sizeForChildContentContainer:container withParentContainerSize:parentSize];
 }
 
-//  This method is invoked whenever the presentedViewController's
-//  preferredContentSize property changes.  It is also invoked just before the
-//  presentation transition begins (prior to -presentationTransitionWillBegin).
 - (void)preferredContentSizeDidChangeForChildContentContainer:(id<UIContentContainer>)container {
     [super preferredContentSizeDidChangeForChildContentContainer:container];
     
@@ -231,31 +295,12 @@
 - (void)containerViewWillLayoutSubviews {
     [super containerViewWillLayoutSubviews];
     self.dimmingView.frame = self.containerView.bounds;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.presentationWrappingView.frame = [self updateFrameForContainerView];
+    }];
 }
 
-#pragma mark - Get
-- (UIView *)presentedView {
-    return self.presentationWrappingView;
-}
-
-- (UIView *)dimmingView {
-    if (!_dimmingView) {
-        _dimmingView = [[UIView alloc] initWithFrame:self.containerView.bounds];
-        _dimmingView.backgroundColor = [UIColor blackColor];
-        _dimmingView.opaque = NO;
-        _dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dimmingViewTapped:)]];
-    }
-    return _dimmingView;
-}
-
-- (UIView *)presentationWrappingView {
-    if (!_presentationWrappingView) {
-        _presentationWrappingView = [[UIView alloc] initWithFrame:self.frameOfPresentedViewInContainerView];
-        [_presentationWrappingView shadowWithColor:nil radius:13 opacity:0.44 offset:CGSizeMake(0, 0) path:nil];
-    }
-    return _presentationWrappingView;
-}
 
 #pragma mark - UIViewControllerTransitioningDelegate
 - (UIPresentationController * )presentationControllerForPresentedViewController:(UIViewController *)presented presentingViewController:(UIViewController *)presenting sourceViewController:(UIViewController *)source {
@@ -265,7 +310,7 @@
 /// 返回一个遵循UIViewControllerInteractiveTransitioning协议的类 用于实现手势驱动 present
 - (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForPresentation:(id <UIViewControllerAnimatedTransitioning>)animator {
     if (self.presentGesture) {
-        return [[YLPresentInteractiveTransition alloc] initWithGestureRecognizer:self.presentGesture directionForDragging:self.animationType];
+        return [[YLPresentInteractiveTransition alloc] initWithGestureRecognizer:self.presentGesture directionForDragging:self.viewAlignment];
     }
     return nil;
 }
@@ -273,6 +318,7 @@
 /// 返回一个遵循UIViewControllerInteractiveTransitioning协议的类 用于实现手势驱动 dismiss
 - (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
     if (self.interactiveEnable && self.dismissInteractive) {
+        self.dismissInteractive.direction = self.viewAlignment;
         return self.dismissInteractive;
     }
     return nil;
@@ -294,31 +340,36 @@
 }
 
 
-#pragma mark - get
+#pragma mark - Get
 /// 根据动画类型返回具体的animator
 - (YLAbstractAnimator *)animator {
     YLAbstractAnimator *_animator;
-    switch (self.animationType) {
-        case YLAnimationTypeTranslationBottom:
-        case YLAnimationTypeTranslationLeft:
-        case YLAnimationTypeTranslationRight:
-        case YLAnimationTypeTranslationTop:
-            /// 四个平移动画
-            _animator = [[YLTranslationAnimator alloc] init];
-            break;
-        
-        case YLAnimationTypeTransformCenter:
-            /// 中心缩放动画
-            _animator = [[YLTransformAnimator alloc] init];
-            break;
+    if (self.customAnimator) {
+        _animator = self.customAnimator;
+    } else {
+        switch (self.animationType) {
+            case YLAnimationTypeTranslationBottom:
+            case YLAnimationTypeTranslationLeft:
+            case YLAnimationTypeTranslationRight:
+            case YLAnimationTypeTranslationTop:
+                /// 四个平移动画
+                _animator = [[YLTranslationAnimator alloc] init];
+                break;
             
-        case YLAnimationTypeCrossDissolve:
-            _animator = [[YLCrossDissolveAnimator alloc] init];
-            break;
-        default:
-            _animator = [[YLAbstractAnimator alloc] init];
-            break;
+            case YLAnimationTypeTransformCenter:
+                /// 中心缩放动画
+                _animator = [[YLTransformAnimator alloc] init];
+                break;
+                
+            case YLAnimationTypeCrossDissolve:
+                _animator = [[YLCrossDissolveAnimator alloc] init];
+                break;
+            default:
+                _animator = [[YLAbstractAnimator alloc] init];
+                break;
+        }
     }
+    
     if (!self.duration) {
         self.duration = 0.3;
     }
@@ -327,9 +378,33 @@
         self.damping = 1;
     }
     _animator.damping = self.damping;
-    _animator.animationType = self.animationType;
+    _animator.viewAlignment = self.viewAlignment;
+    _animator.viewEdgeInsets = self.viewEdgeInsets;
     
     return _animator;
+}
+
+- (UIView *)presentedView {
+    return self.presentationWrappingView;
+}
+
+- (UIView *)dimmingView {
+    if (!_dimmingView) {
+        _dimmingView = [[UIView alloc] initWithFrame:self.containerView.bounds];
+        _dimmingView.backgroundColor = [UIColor blackColor];
+        _dimmingView.opaque = NO;
+        _dimmingView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [_dimmingView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dimmingViewTapped:)]];
+    }
+    return _dimmingView;
+}
+
+- (UIView *)presentationWrappingView {
+    if (!_presentationWrappingView) {
+        _presentationWrappingView = [[UIView alloc] initWithFrame:self.frameOfPresentedViewInContainerView];
+        [_presentationWrappingView shadowWithColor:nil radius:13 opacity:0.44 offset:CGSizeMake(0, 0) path:nil];
+    }
+    return _presentationWrappingView;
 }
 
 @end

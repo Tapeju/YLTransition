@@ -12,6 +12,10 @@
 #import "RightViewController.h"
 #import "TopViewController.h"
 #import "BottomViewController.h"
+#import "BottomScrollViewController.h"
+#import "CenterViewController.h"
+#import "CustomAnimator.h"
+#import "CustomViewController.h"
 
 @interface ViewController ()
 
@@ -22,19 +26,65 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = UIColor.whiteColor;
+    /// 四种手势驱动 Present 用法
     [self addRightGestureRecognizer];
     [self addLeftGestureRecognizer];
     [self addTopGestureRecognizer];
     [self addBottomGestureRecognizer];
+    
+    /// 普通用法
+    UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(100, 100, 200, 35)];
+    [btn setTitle:@"show ViewController" forState:UIControlStateNormal];
+    [btn setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+    [btn addTarget:self action:@selector(showVc) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn];
+    
+    /// 自定义动画
+    UIButton *btn2 = [[UIButton alloc] initWithFrame:CGRectMake(100, 200, 200, 35)];
+    [btn2 setTitle:@"show CustomAnimator" forState:UIControlStateNormal];
+    [btn2 setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+    [btn2 addTarget:self action:@selector(showCustomAnimatorVc) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn2];
+    
+    /// 手势冲突
+    UIButton *btn3 = [[UIButton alloc] initWithFrame:CGRectMake(100, 300, 200, 35)];
+    [btn3 setTitle:@"show ContentScrollView" forState:UIControlStateNormal];
+    [btn3 setTitleColor:UIColor.blackColor forState:UIControlStateNormal];
+    [btn3 addTarget:self action:@selector(showContentScrollView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:btn3];
 }
 
 
 - (void)showVc {
-    PresentedViewController *presentedVc = [[PresentedViewController alloc] init];
-    YLModalTransitionManager *animator = [[YLModalTransitionManager alloc] initWithPresentedViewController:presentedVc presentingViewController:self];
-    animator.animationType = YLAnimationTypeTranslationRight;
-    animator.dragable = YES;
+    CenterViewController *presentedVc = [[CenterViewController alloc] init];
+    YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:presentedVc presentingViewController:self];
+    manager.animationType = YLAnimationTypeTransformCenter;
+    manager.dragable = YES;
+    manager.radius = 13;
     [self presentViewController:presentedVc animated:YES completion:nil];
+}
+
+- (void)showCustomAnimatorVc {
+    CustomViewController *presentedVc = [[CustomViewController alloc] init];
+    YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:presentedVc presentingViewController:self];
+    CustomAnimator *animator =  [[CustomAnimator alloc] init];
+    manager.customAnimator = animator;
+    manager.dragable = YES;
+    manager.radius = 13;
+    manager.viewAlignment = YLAlignment_Top;
+    manager.viewEdgeInsets = UIEdgeInsetsMake(20, 20, 20, 20);
+    [self presentViewController:presentedVc animated:YES completion:nil];
+}
+
+- (void)showContentScrollView {
+    BottomScrollViewController *bottomScrollView = [[BottomScrollViewController alloc] init];
+    YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:bottomScrollView presentingViewController:self];
+    manager.animationType = YLAnimationTypeTranslationBottom;
+    manager.dragable = YES;
+    [manager setContentScrollView:bottomScrollView.tableView];
+    manager.radius = 13;
+    [self presentViewController:bottomScrollView animated:YES completion:nil];
+    
 }
 
 - (void)addRightGestureRecognizer {
@@ -44,13 +94,13 @@
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
     interactiveTransitionRecognizer.presentBlock = ^{
         PresentedViewController *vc = [[RightViewController alloc] init];
-        YLModalTransitionManager *animator = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
-        animator.presentGesture = weakInteractive;
-        animator.animationType = YLAnimationTypeTranslationRight;
-        animator.dragable = YES;
-        animator.radius = 13;
-        animator.zoomScale = 0.90;
-        animator.rectCorner = UIRectCornerTopLeft | UIRectCornerBottomLeft;
+        YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
+        manager.presentGesture = weakInteractive;
+        manager.animationType = YLAnimationTypeTranslationRight;
+        manager.dragable = YES;
+        manager.radius = 13;
+        manager.zoomScale = 0.90;
+        manager.rectCorner = UIRectCornerTopLeft | UIRectCornerBottomLeft;
         [weakSelf presentViewController:vc animated:YES completion:nil];
     };
     
@@ -64,13 +114,13 @@
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
     interactiveTransitionRecognizer.presentBlock = ^{
         PresentedViewController *vc = [[LeftViewController alloc] init];
-        YLModalTransitionManager *animator = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
-        animator.presentGesture = weakInteractive;
-        animator.animationType = YLAnimationTypeTranslationLeft;
-        animator.dragable = YES;
-        animator.radius = 13;
-        animator.zoomScale = 0.90;
-        animator.rectCorner = UIRectCornerTopRight| UIRectCornerBottomRight;
+        YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
+        manager.presentGesture = weakInteractive;
+        manager.animationType = YLAnimationTypeTranslationLeft;
+        manager.dragable = YES;
+        manager.radius = 13;
+        manager.zoomScale = 0.90;
+        manager.rectCorner = UIRectCornerTopRight| UIRectCornerBottomRight;
         [weakSelf presentViewController:vc animated:YES completion:nil];
     };
     
@@ -84,12 +134,12 @@
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
     interactiveTransitionRecognizer.presentBlock = ^{
         PresentedViewController *vc = [[TopViewController alloc] init];
-        YLModalTransitionManager *animator = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
-        animator.presentGesture = weakInteractive;
-        animator.animationType = YLAnimationTypeTranslationTop;
-        animator.dragable = YES;
-        animator.radius = 13;
-        animator.rectCorner = UIRectCornerBottomLeft | UIRectCornerBottomRight;
+        YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
+        manager.presentGesture = weakInteractive;
+        manager.animationType = YLAnimationTypeTranslationTop;
+        manager.dragable = YES;
+        manager.radius = 13;
+        manager.rectCorner = UIRectCornerBottomLeft | UIRectCornerBottomRight;
         [weakSelf presentViewController:vc animated:YES completion:nil];
     };
     
@@ -103,12 +153,12 @@
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
     interactiveTransitionRecognizer.presentBlock = ^{
         PresentedViewController *vc = [[BottomViewController alloc] init];
-        YLModalTransitionManager *animator = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
-        animator.presentGesture = weakInteractive;
-        animator.animationType = YLAnimationTypeTranslationBottom;
-        animator.dragable = YES;
-        animator.radius = 13;
-        animator.rectCorner = UIRectCornerTopLeft | UIRectCornerTopRight;
+        YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
+        manager.presentGesture = weakInteractive;
+        manager.animationType = YLAnimationTypeTranslationBottom;
+        manager.dragable = YES;
+        manager.radius = 13;
+        manager.rectCorner = UIRectCornerTopLeft | UIRectCornerTopRight;
         [weakSelf presentViewController:vc animated:YES completion:nil];
     };
     

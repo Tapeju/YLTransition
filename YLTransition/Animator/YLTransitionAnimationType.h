@@ -26,4 +26,12 @@ typedef NS_ENUM(NSUInteger, YLTransitionAnimationType) {
     YLAnimationTypeCrossDissolve,
 };
 
+typedef NS_ENUM(NSUInteger, YLAlignment) {
+    YLAlignment_Top,
+    YLAlignment_Left,
+    YLAlignment_Bottom,
+    YLAlignment_Right,
+    YLAlignment_Center,
+};
+
 #endif /* ModalAnimationType_h */

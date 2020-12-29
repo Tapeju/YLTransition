@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-
 #import "YLTransitionAnimationType.h"
+
 @class YLDirectionAbstractPanGesTureRecognizer;
+@class YLAbstractAnimator;
+
 NS_ASSUME_NONNULL_BEGIN
 
 /// modal转场动画
@@ -43,6 +45,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 如果Presnent出来的控制器是一个scrollView 并且想要支持拖动Dismiss 需要调这个方法
 - (void)setContentScrollView:(UIScrollView *)scrollView;
+
+/// 默认无需设置, 只有使用自定义的customAnimator 后 present出来的View位置不对才需要设置
+@property (nonatomic, assign) YLAlignment viewAlignment;
+
+/// 和viewAlignment一起使用 确定View的边距
+@property (nonatomic) UIEdgeInsets viewEdgeInsets;
+
+/// 自定义动画类
+@property (nonatomic, strong) YLAbstractAnimator *customAnimator;
 
 @end
 

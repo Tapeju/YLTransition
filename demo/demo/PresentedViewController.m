@@ -25,9 +25,8 @@
     [self updatePreferredContentSizeWithTraitCollection:newCollection];
 }
 
-/// 重写该方法 可以自适应弹出视图的frame
 - (void)updatePreferredContentSizeWithTraitCollection:(UITraitCollection *)traitCollection {
-    self.preferredContentSize = CGSizeMake(UIScreen.mainScreen.bounds.size.width , UIScreen.mainScreen.bounds.size.height);
+    self.preferredContentSize = CGSizeMake(UIScreen.mainScreen.bounds.size.width, UIScreen.mainScreen.bounds.size.height);
 }
 
 - (void)dealloc {

@@ -13,13 +13,13 @@
 
 @property (nonatomic, weak) id<UIViewControllerContextTransitioning> transitionContext;
 @property (nonatomic, strong) YLDirectionAbstractPanGesTureRecognizer *gestureRecognizer;
-@property (nonatomic, assign) YLTransitionAnimationType direction;
+@property (nonatomic, assign) YLAlignment direction;
 
 @end
 
 @implementation YLPresentInteractiveTransition
 
-- (instancetype)initWithGestureRecognizer:(YLDirectionAbstractPanGesTureRecognizer *)gestureRecognizer directionForDragging:(YLTransitionAnimationType)direction {
+- (instancetype)initWithGestureRecognizer:(YLDirectionAbstractPanGesTureRecognizer *)gestureRecognizer directionForDragging:(YLAlignment)direction {
     self = [super init];
     if (self) {
         _gestureRecognizer = gestureRecognizer;
@@ -30,7 +30,7 @@
 }
 
 - (instancetype)init {
-    @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Use -initWithGestureRecognizer:edgeForDragging:" userInfo:nil];
+    @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Use -initWithGestureRecognizer:directionForDragging:" userInfo:nil];
 }
 
 - (void)dealloc {
@@ -58,29 +58,30 @@
 /// 获取滑动百分比
 - (CGFloat)percentForGesture:(YLDirectionAbstractPanGesTureRecognizer *)gesture {
     UIView *containerView = _transitionContext.containerView;
-    __unused UIView *toView = [_transitionContext viewForKey:UITransitionContextToViewKey];
-    __unused UIView *fromView = [_transitionContext viewForKey:UITransitionContextFromViewKey];
+    UIView *toView = [_transitionContext viewForKey:UITransitionContextToViewKey];
 
     /// 手指位置
     CGPoint location = [gesture locationInView:containerView.window];
     location = CGPointApplyAffineTransform(location, CGAffineTransformInvert(gesture.view.transform));
     
     CGFloat panLocationStart;
-    if (self.direction == YLAnimationTypeTranslationBottom || self.direction == YLAnimationTypeTranslationTop) {
+    if (self.direction == YLAlignment_Bottom || self.direction == YLAlignment_Top || self.direction == YLAlignment_Center) {
         panLocationStart = gesture.panLocationStart.y;
     } else {
         panLocationStart = gesture.panLocationStart.x;
     }
     
     CGFloat animationRatio = 0;
-    if (self.direction == YLAnimationTypeTranslationTop) {
-        animationRatio = (location.y - panLocationStart) / (CGRectGetHeight(containerView.bounds));
-    } else if (self.direction == YLAnimationTypeTranslationRight) {
-        animationRatio = (panLocationStart - location.x) / (CGRectGetWidth(containerView.bounds));
-    } else if (self.direction == YLAnimationTypeTranslationLeft) {
-        animationRatio = (location.x - panLocationStart) / (CGRectGetWidth(containerView.bounds));
-    } else if (self.direction == YLAnimationTypeTranslationBottom) {
-        animationRatio = (panLocationStart - location.y) / (CGRectGetHeight(containerView.bounds));
+    if (self.direction == YLAlignment_Top) {
+        animationRatio = (location.y - panLocationStart) / (CGRectGetHeight(toView.bounds));
+    } else if (self.direction == YLAlignment_Right) {
+        animationRatio = (panLocationStart - location.x) / (CGRectGetWidth(toView.bounds));
+    } else if (self.direction == YLAlignment_Left) {
+        animationRatio = (location.x - panLocationStart) / (CGRectGetWidth(toView.bounds));
+    } else if (self.direction == YLAlignment_Bottom) {
+        animationRatio = (panLocationStart - location.y) / (CGRectGetHeight(toView.bounds));
+    } else if (self.direction == YLAlignment_Center) {
+        animationRatio = (location.y - panLocationStart) / (CGRectGetHeight(toView.bounds));
     }
     
     return animationRatio;
@@ -102,17 +103,17 @@
     velocity = CGPointApplyAffineTransform(velocity, CGAffineTransformInvert(gesture.view.transform));
     
     CGFloat velocityForSelectedDirection;
-    if (self.direction == YLAnimationTypeTranslationBottom || self.direction == YLAnimationTypeTranslationTop) {
+    if (self.direction == YLAlignment_Bottom || self.direction == YLAlignment_Top) {
         velocityForSelectedDirection = velocity.y;
     } else {
         velocityForSelectedDirection = velocity.x;
     }
 
     if (velocityForSelectedDirection > 100 &&
-        (self.direction == YLAnimationTypeTranslationLeft || self.direction == YLAnimationTypeTranslationTop)) {
+        (self.direction == YLAlignment_Left || self.direction == YLAlignment_Top)) {
         [self finishInteractiveTransition];
     } else if (velocityForSelectedDirection < -100 &&
-               (self.direction == YLAnimationTypeTranslationRight  || self.direction == YLAnimationTypeTranslationBottom )) {
+               (self.direction == YLAlignment_Right  || self.direction == YLAlignment_Bottom )) {
         [self finishInteractiveTransition];
     } else {
         [self cancelInteractiveTransition];

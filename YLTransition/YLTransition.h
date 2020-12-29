@@ -11,9 +11,7 @@
 #import <Foundation/Foundation.h>
 
 #import "YLTransitionAnimationType.h"
-
 #import "YLModalTransitionManager.h"
-
 #import "YLLeftPanGesTureRecognizer.h"
 #import "YLRightPanGesTureRecognizer.h"
 #import "YLTopPanGesTureRecognizer.h"

@@ -30,21 +30,21 @@
     if (isPresentOrPush) {
         /// 出现前的frem
         CGPoint origin;
-        switch (self.animationType) {
-            case YLAnimationTypeTranslationTop:
+        switch (self.viewAlignment) {
+            case YLAlignment_Top:
                 origin = CGPointMake(CGRectGetMinX(containerView.bounds), -CGRectGetMaxY(toView.bounds));
                 break;
                 
-            case YLAnimationTypeTranslationLeft:
+            case YLAlignment_Left:
                 origin = CGPointMake(-CGRectGetWidth(toView.bounds), CGRectGetMinY(containerView.bounds));
                 break;
                 
-            case YLAnimationTypeTranslationBottom:
+            case YLAlignment_Bottom:
                 origin = CGPointMake(CGRectGetMinX(containerView.bounds), CGRectGetMaxY(containerView.bounds));
                 toViewFinalFrame = CGRectOffset(toViewFinalFrame, 0, CGRectGetHeight(containerView.frame) - CGRectGetHeight(toViewFinalFrame));
                 break;
                 
-            case YLAnimationTypeTranslationRight:
+            case YLAlignment_Right:
                 origin = CGPointMake(CGRectGetWidth(containerView.bounds), CGRectGetMinY(containerView.bounds));
                 toViewFinalFrame = CGRectOffset(toViewFinalFrame, CGRectGetWidth(containerView.frame) - CGRectGetWidth(toViewFinalFrame), 0);
                 break;
@@ -59,20 +59,20 @@
         
     } else {
         /// 消失时的frame
-        switch (self.animationType) {
-            case YLAnimationTypeTranslationTop:
+        switch (self.viewAlignment) {
+            case YLAlignment_Top:
                 fromViewFinalFrame = CGRectOffset(fromView.frame, 0, -CGRectGetHeight(fromView.frame));
                 break;
                 
-            case YLAnimationTypeTranslationLeft:
+            case YLAlignment_Left:
                 fromViewFinalFrame = CGRectOffset(fromView.frame, -CGRectGetWidth(fromView.frame), 0);
                 break;
                 
-            case YLAnimationTypeTranslationBottom:
+            case YLAlignment_Bottom:
                 fromViewFinalFrame = CGRectOffset(fromView.frame, 0, CGRectGetHeight(fromView.frame));
                 break;
                 
-            case YLAnimationTypeTranslationRight:
+            case YLAlignment_Right:
                 fromViewFinalFrame = CGRectOffset(fromView.frame, CGRectGetWidth(fromView.frame), 0);
                 break;
                 
