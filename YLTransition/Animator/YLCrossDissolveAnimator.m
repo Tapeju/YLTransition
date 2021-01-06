@@ -11,30 +11,73 @@
 @implementation YLCrossDissolveAnimator
 
 - (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
-{
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+                   fromVC:(UIViewController *)fromVC
+                     toVC:(UIViewController *)toVC
+                 fromView:(UIView *)fromView
+                   toView:(UIView *)toView
+            containerView:(UIView *)containerView {
     
-    UIView *containerView = transitionContext.containerView;
-    UIView *fromView;
-    UIView *toView;
+    fromView.frame = [transitionContext initialFrameForViewController:fromVC];
+    toView.frame = [transitionContext finalFrameForViewController:toVC];
+    
+    CGPoint origin;
+    if (!self.isReverse) {
+        switch (self.viewAlignment) {
+            case YLAlignment_Top:
+            case YLAlignment_Left:
+                origin = CGPointMake(CGRectGetMinX(containerView.bounds) + self.viewEdgeInsets.left, CGRectGetMinY(containerView.bounds) + self.viewEdgeInsets.top);
+                break;
 
-    if ([transitionContext respondsToSelector:@selector(viewForKey:)]) {
-        fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-        toView = [transitionContext viewForKey:UITransitionContextToViewKey];
+            case YLAlignment_Bottom:
+                origin = CGPointMake(CGRectGetMinX(containerView.bounds) + self.viewEdgeInsets.left, CGRectGetMaxY(containerView.bounds) - CGRectGetHeight(toView.frame) - self.viewEdgeInsets.bottom);
+                break;
+
+            case YLAlignment_Right:
+                origin = CGPointMake(CGRectGetWidth(containerView.bounds) - CGRectGetWidth(toView.frame) - self.viewEdgeInsets.right, CGRectGetMinY(containerView.bounds) + self.viewEdgeInsets.top);
+                break;
+
+            case YLAlignment_Center:
+                origin = CGPointMake(((CGRectGetMaxX(containerView.frame) - CGRectGetWidth(toView.frame)) / 2) + self.viewEdgeInsets.left, ((CGRectGetMaxY(containerView.frame) - CGRectGetHeight(toView.frame)) / 2) + self.viewEdgeInsets.top);
+                break;
+
+            default:
+                origin =  CGPointMake(CGRectGetMinX(containerView.bounds) + self.viewEdgeInsets.left, CGRectGetMinY(containerView.bounds) + self.viewEdgeInsets.top);
+                break;
+        }
+        CGRect frame = toView.frame;
+        frame.origin = origin;
+        toView.frame = frame;
     } else {
-        fromView = fromViewController.view;
-        toView = toViewController.view;
+        switch (self.viewAlignment) {
+            case YLAlignment_Top:
+            case YLAlignment_Left:
+                origin = CGPointMake(CGRectGetMinX(containerView.bounds) + self.viewEdgeInsets.left, CGRectGetMinY(containerView.bounds) + self.viewEdgeInsets.top);
+                break;
+
+            case YLAlignment_Bottom:
+                origin = CGPointMake(CGRectGetMinX(containerView.bounds) + self.viewEdgeInsets.left, CGRectGetMaxY(containerView.bounds) - CGRectGetHeight(fromView.frame) - self.viewEdgeInsets.bottom);
+                break;
+
+            case YLAlignment_Right:
+                origin = CGPointMake(CGRectGetWidth(containerView.bounds) - CGRectGetWidth(fromView.frame) - self.viewEdgeInsets.right, CGRectGetMinY(containerView.bounds) + self.viewEdgeInsets.top);
+                break;
+
+            case YLAlignment_Center:
+                origin = CGPointMake(((CGRectGetMaxX(containerView.frame) - CGRectGetWidth(fromView.frame)) / 2) + self.viewEdgeInsets.left, ((CGRectGetMaxY(containerView.frame) - CGRectGetHeight(fromView.frame)) / 2) + self.viewEdgeInsets.top);
+                break;
+
+            default:
+                origin =  CGPointMake(CGRectGetMinX(containerView.bounds) + self.viewEdgeInsets.left, CGRectGetMinY(containerView.bounds) + self.viewEdgeInsets.top);
+                break;
+        }
+        CGRect frame = fromView.frame;
+        frame.origin = origin;
+        fromView.frame = frame;
     }
-    
-    fromView.frame = [transitionContext initialFrameForViewController:fromViewController];
-    toView.frame = [transitionContext finalFrameForViewController:toViewController];
-    
+
     fromView.alpha = 1.0f;
     toView.alpha = 0.0f;
-    
-    [containerView addSubview:toView];
-    
+
     NSTimeInterval transitionDuration = [self transitionDuration:transitionContext];
     
     [UIView animateWithDuration:transitionDuration animations:^{

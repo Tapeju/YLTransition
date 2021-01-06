@@ -25,6 +25,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) UIEdgeInsets viewEdgeInsets;
 
+/// 动画的方向是否反转
+@property (nonatomic, assign, getter=isReverse) BOOL reverse;
+
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
+                   fromVC:(UIViewController *)fromVC
+                     toVC:(UIViewController *)toVC
+                 fromView:(UIView *)fromView
+                   toView:(UIView *)toView
+            containerView:(UIView *)containerView;
+
 @end
 
 NS_ASSUME_NONNULL_END

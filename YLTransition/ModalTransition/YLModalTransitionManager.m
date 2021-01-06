@@ -168,30 +168,6 @@
     }
 }
 
-- (void)bindingAnimationTypeToViewAlignment {
-    switch (self.animationType) {
-        case YLAnimationTypeTranslationBottom:
-            self.viewAlignment = YLAlignment_Bottom;
-            break;
-
-        case YLAnimationTypeTranslationRight:
-            self.viewAlignment = YLAlignment_Right;
-            break;
-
-        case YLAnimationTypeTransformCenter:
-            self.viewAlignment = YLAlignment_Center;
-            break;
-            
-        case YLAnimationTypeTranslationLeft:
-            self.viewAlignment = YLAlignment_Left;
-            break;
-            
-        default:
-            self.viewAlignment = YLAlignment_Top;
-            break;
-    }
-}
-
 - (CGRect)updateFrameForContainerView {
     CGPoint origin = self.presentedView.frame.origin;
     CGSize  newSize = self.frameOfPresentedViewInContainerView.size;
@@ -245,11 +221,6 @@
         self.dragable = YES;
     }
     self.dismissGesture.scrollview = scrollView;
-}
-
-- (void)setAnimationType:(YLTransitionAnimationType)animationType {
-    _animationType = animationType;
-    [self bindingAnimationTypeToViewAlignment];
 }
 
 - (void)setViewAlignment:(YLAlignment)viewAlignment {
@@ -327,6 +298,7 @@
 /// 返回一个遵循UIViewControllerAnimatedTransitioning协议的类 用于实现present动画
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForPresentedController:(UIViewController *)presented presentingController:(UIViewController *)presenting sourceController:(UIViewController *)source {
     YLAbstractAnimator *animator = [self animator];
+    animator.reverse = NO;
     return animator;
 }
 
@@ -334,6 +306,7 @@
 - (id<UIViewControllerAnimatedTransitioning>)animationControllerForDismissedController:(UIViewController *)dismissed {
     if (dismissed) {
         YLAbstractAnimator *animator = [self animator];
+        animator.reverse = YES;
         return animator;
     }
     return nil;
@@ -348,11 +321,8 @@
         _animator = self.customAnimator;
     } else {
         switch (self.animationType) {
-            case YLAnimationTypeTranslationBottom:
-            case YLAnimationTypeTranslationLeft:
-            case YLAnimationTypeTranslationRight:
-            case YLAnimationTypeTranslationTop:
-                /// 四个平移动画
+            case YLAnimationTypeTranslation:
+                /// 平移动画
                 _animator = [[YLTranslationAnimator alloc] init];
                 break;
             

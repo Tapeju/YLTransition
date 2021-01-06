@@ -28,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 动画时间 如果设置0 则默认0.3
 @property (nonatomic, assign) CGFloat duration;
 
-/// 弹出控制器动画类型
+/// 弹出控制器动画类型 
 @property (nonatomic, assign) YLTransitionAnimationType animationType;
 
 /// 背景图缩放比例取值0< x <=1 ,1为没有缩放 默认无特效
@@ -46,7 +46,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 如果Presnent出来的控制器是一个scrollView 并且想要支持拖动Dismiss 需要调这个方法
 - (void)setContentScrollView:(UIScrollView *)scrollView;
 
-/// 默认无需设置, 只有使用自定义的customAnimator 后 present出来的View位置不对才需要设置
+/// present 时需要设置 用来确定弹出控制器的位置
 @property (nonatomic, assign) YLAlignment viewAlignment;
 
 /// 和viewAlignment一起使用 确定View的边距

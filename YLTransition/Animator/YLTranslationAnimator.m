@@ -10,24 +10,19 @@
 
 @implementation YLTranslationAnimator
 
-- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
-    UIViewController *fromViewController = [transitionContext viewControllerForKey:UITransitionContextFromViewControllerKey];
-    UIViewController *toViewController = [transitionContext viewControllerForKey:UITransitionContextToViewControllerKey];
+- (void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext
+                   fromVC:(UIViewController *)fromVC
+                     toVC:(UIViewController *)toVC
+                 fromView:(UIView *)fromView
+                   toView:(UIView *)toView
+            containerView:(UIView *)containerView {
     
-    UIView *containerView = transitionContext.containerView;
-    UIView *toView = [transitionContext viewForKey:UITransitionContextToViewKey];
-    UIView *fromView = [transitionContext viewForKey:UITransitionContextFromViewKey];
+    CGRect fromViewFinalFrame = [transitionContext finalFrameForViewController:fromVC];
+    CGRect toViewInitialFrame = [transitionContext initialFrameForViewController:toVC];
+    CGRect toViewFinalFrame = [transitionContext finalFrameForViewController:toVC];/// 动画做完之后的frame
     
-    BOOL isPresenting = (toViewController.presentingViewController == fromViewController);
-    BOOL isPush = ([toViewController.navigationController.viewControllers indexOfObject:toViewController] > [fromViewController.navigationController.viewControllers indexOfObject:fromViewController]);
-    BOOL isPresentOrPush = isPush || isPresenting;
-    CGRect __unused fromViewInitialFrame = [transitionContext initialFrameForViewController:fromViewController];
-    CGRect fromViewFinalFrame = [transitionContext finalFrameForViewController:fromViewController];
-    CGRect toViewInitialFrame = [transitionContext initialFrameForViewController:toViewController];
-    CGRect toViewFinalFrame = [transitionContext finalFrameForViewController:toViewController];/// 动画做完之后的frame
-    [containerView addSubview:toView];
     
-    if (isPresentOrPush) {
+    if (!self.isReverse) {
         /// 出现前的frem
         CGPoint origin;
         switch (self.viewAlignment) {
@@ -87,7 +82,7 @@
     NSTimeInterval transitionDuration = [self transitionDuration:transitionContext];
     
     [UIView animateWithDuration:transitionDuration animations:^{
-        if (isPresentOrPush)
+        if (!self.isReverse)
             toView.frame = toViewFinalFrame;
         else
             fromView.frame = fromViewFinalFrame;
@@ -96,21 +91,6 @@
         BOOL wasCancelled = [transitionContext transitionWasCancelled];
         [transitionContext completeTransition:!wasCancelled];
     }];
-    
-    /// 这个动画效果使用手势驱动时不太跟手 
-//    [UIView animateWithDuration:transitionDuration delay:0 usingSpringWithDamping:self.damping initialSpringVelocity:0.2f options:UIViewAnimationOptionCurveEaseInOut animations:^{
-//
-//        if (isPresentOrPush)
-//            toView.frame = toViewFinalFrame;
-//        else
-//            fromView.frame = fromViewFinalFrame;
-//
-//    } completion:^(BOOL finished) {
-//        BOOL wasCancelled = [transitionContext transitionWasCancelled];
-//        [transitionContext completeTransition:!wasCancelled];
-//    }];
-    
-
 }
 
 @end

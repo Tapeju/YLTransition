@@ -58,7 +58,8 @@
 - (void)showVc {
     CenterViewController *presentedVc = [[CenterViewController alloc] init];
     YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:presentedVc presentingViewController:self];
-    manager.animationType = YLAnimationTypeTransformCenter;
+    manager.animationType = YLAnimationTypeCrossDissolve;
+    manager.viewAlignment = YLAlignment_Center;
     manager.dragable = YES;
     manager.radius = 13;
     [self presentViewController:presentedVc animated:YES completion:nil];
@@ -79,7 +80,8 @@
 - (void)showContentScrollView {
     BottomScrollViewController *bottomScrollView = [[BottomScrollViewController alloc] init];
     YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:bottomScrollView presentingViewController:self];
-    manager.animationType = YLAnimationTypeTranslationBottom;
+    manager.animationType = YLAnimationTypeTranslation;
+    manager.viewAlignment = YLAlignment_Bottom;
     manager.dragable = YES;
     [manager setContentScrollView:bottomScrollView.tableView];
     manager.radius = 13;
@@ -96,7 +98,8 @@
         PresentedViewController *vc = [[RightViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;
-        manager.animationType = YLAnimationTypeTranslationRight;
+        manager.animationType = YLAnimationTypeTranslation;
+        manager.viewAlignment = YLAlignment_Right;
         manager.dragable = YES;
         manager.radius = 13;
         manager.zoomScale = 0.90;
@@ -116,7 +119,8 @@
         PresentedViewController *vc = [[LeftViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;
-        manager.animationType = YLAnimationTypeTranslationLeft;
+        manager.animationType = YLAnimationTypeTranslation;
+        manager.viewAlignment = YLAlignment_Left;
         manager.dragable = YES;
         manager.radius = 13;
         manager.zoomScale = 0.90;
@@ -136,7 +140,8 @@
         PresentedViewController *vc = [[TopViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;
-        manager.animationType = YLAnimationTypeTranslationTop;
+        manager.animationType = YLAnimationTypeTranslation;
+        manager.viewAlignment = YLAlignment_Top;
         manager.dragable = YES;
         manager.radius = 13;
         manager.rectCorner = UIRectCornerBottomLeft | UIRectCornerBottomRight;
@@ -155,7 +160,8 @@
         PresentedViewController *vc = [[BottomViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;
-        manager.animationType = YLAnimationTypeTranslationBottom;
+        manager.animationType = YLAnimationTypeTranslation;
+        manager.viewAlignment = YLAlignment_Bottom;
         manager.dragable = YES;
         manager.radius = 13;
         manager.rectCorner = UIRectCornerTopLeft | UIRectCornerTopRight;

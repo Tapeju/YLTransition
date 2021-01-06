@@ -164,10 +164,10 @@
 				E6672D492595C7F60030A2A0 /* YLTransitionAnimationType.h */,
 				E6672D522595C7F60030A2A0 /* YLAbstractAnimator.h */,
 				E6672D4C2595C7F60030A2A0 /* YLAbstractAnimator.m */,
-				E6672D512595C7F60030A2A0 /* YLTransformAnimator.h */,
-				E6672D4D2595C7F60030A2A0 /* YLTransformAnimator.m */,
 				E6672D502595C7F60030A2A0 /* YLTranslationAnimator.h */,
 				E6672D4E2595C7F60030A2A0 /* YLTranslationAnimator.m */,
+				E6672D512595C7F60030A2A0 /* YLTransformAnimator.h */,
+				E6672D4D2595C7F60030A2A0 /* YLTransformAnimator.m */,
 				E6672D4F2595C7F60030A2A0 /* YLCrossDissolveAnimator.h */,
 				E6672D532595C7F60030A2A0 /* YLCrossDissolveAnimator.m */,
 			);
