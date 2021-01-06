@@ -24,9 +24,9 @@
 }
 
 - (void)yl_radiusWithRadius:(CGFloat)radius
-                  corner:(UIRectCorner)corner
-             borderColor:(UIColor * _Nullable)borderColor
-             borderWidth:(CGFloat)borderWidth {
+                     corner:(UIRectCorner)corner
+                borderColor:(UIColor * _Nullable)borderColor
+                borderWidth:(CGFloat)borderWidth {
     self.layer.cornerRadius = radius;
     self.layer.maskedCorners = (CACornerMask)corner;
     if (borderColor) self.layer.borderColor = borderColor.CGColor;
@@ -39,9 +39,9 @@
 }
 
 - (void)yl_bezierPathRadiusWithRadius:(CGFloat)radius
-                            corner:(UIRectCorner)corner
-                       borderColor:(UIColor * _Nullable)borderColor
-                       borderWidth:(CGFloat)borderWidth {
+                               corner:(UIRectCorner)corner
+                          borderColor:(UIColor * _Nullable)borderColor
+                          borderWidth:(CGFloat)borderWidth {
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.bounds byRoundingCorners:corner cornerRadii:CGSizeMake(radius, radius)];
     if (borderWidth > 0) path.lineWidth = borderWidth;
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
@@ -55,11 +55,11 @@
 }
 
 #pragma mark - 阴影
-- (void)shadowWithColor:(UIColor * _Nullable)color
-                 radius:(CGFloat)radius
-                opacity:(CGFloat)opacity
-                 offset:(CGSize)offset
-                   path:(CGPathRef _Nullable)path; {
+- (void)yl_shadowWithColor:(UIColor * _Nullable)color
+                    radius:(CGFloat)radius
+                   opacity:(CGFloat)opacity
+                    offset:(CGSize)offset
+                      path:(CGPathRef _Nullable)path; {
     if (color) self.layer.shadowColor = color.CGColor;
     self.layer.shadowOpacity = opacity;
     self.layer.shadowRadius = radius;

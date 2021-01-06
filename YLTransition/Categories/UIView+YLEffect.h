@@ -35,23 +35,23 @@ YLCornerRadiiMake(CGFloat topLeft,CGFloat topRight,CGFloat bottomLeft,CGFloat bo
 
 /// 给View添加圆角
 - (void)yl_radiusWithRadius:(CGFloat)radius
-                  corner:(UIRectCorner)corner;
+                     corner:(UIRectCorner)corner;
 
 /// 给View添加圆角和边框
 - (void)yl_radiusWithRadius:(CGFloat)radius
-                  corner:(UIRectCorner)corner
-             borderColor:(UIColor * _Nullable)borderColor
-             borderWidth:(CGFloat)borderWidth;
+                     corner:(UIRectCorner)corner
+                borderColor:(UIColor * _Nullable)borderColor
+                borderWidth:(CGFloat)borderWidth;
 
 /// 使用贝塞尔曲线添加圆角
 - (void)yl_bezierPathRadius:(CGFloat)radius
-                  corner:(UIRectCorner)corner;
+                     corner:(UIRectCorner)corner;
 
 /// 使用贝塞尔曲线添加圆角以及边框
 - (void)yl_bezierPathRadiusWithRadius:(CGFloat)radius
-                            corner:(UIRectCorner)corner
-                       borderColor:(UIColor * _Nullable)borderColor
-                       borderWidth:(CGFloat)borderWidth;
+                               corner:(UIRectCorner)corner
+                          borderColor:(UIColor * _Nullable)borderColor
+                          borderWidth:(CGFloat)borderWidth;
 
 #pragma mark - 阴影
 /// 添加一个阴影
@@ -60,11 +60,11 @@ YLCornerRadiiMake(CGFloat topLeft,CGFloat topRight,CGFloat bottomLeft,CGFloat bo
 /// @param opacity 透明
 /// @param offset 阴影方向
 /// @param path 阴影路径, 设置该值可避免离屏渲染
-- (void)shadowWithColor:(UIColor * _Nullable)color
-                 radius:(CGFloat)radius
-                opacity:(CGFloat)opacity
-                 offset:(CGSize)offset
-                   path:(CGPathRef _Nullable)path;
+- (void)yl_shadowWithColor:(UIColor * _Nullable)color
+                    radius:(CGFloat)radius
+                   opacity:(CGFloat)opacity
+                    offset:(CGSize)offset
+                      path:(CGPathRef _Nullable)path;
 
 @end
 

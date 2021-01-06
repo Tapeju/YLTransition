@@ -372,7 +372,7 @@
 - (UIView *)presentationWrappingView {
     if (!_presentationWrappingView) {
         _presentationWrappingView = [[UIView alloc] initWithFrame:self.frameOfPresentedViewInContainerView];
-        [_presentationWrappingView shadowWithColor:nil radius:13 opacity:0.44 offset:CGSizeMake(0, 0) path:nil];
+        [_presentationWrappingView yl_shadowWithColor:nil radius:13 opacity:0.44 offset:CGSizeMake(0, 0) path:nil];
     }
     return _presentationWrappingView;
 }
