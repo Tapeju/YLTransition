@@ -24,10 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSNumber *isFail;
 
 /// 调用present / push的block
-@property(nonatomic, copy) void (^presentBlock)(void);
-
-/// 调用dismiss / popd的block
-@property(nonatomic, copy) void (^dismissBlock)(void);
+@property(nonatomic, copy) void (^beginBlock)(void);
 
 @end
 

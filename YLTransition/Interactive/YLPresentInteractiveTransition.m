@@ -40,7 +40,6 @@
 - (void)startInteractiveTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     // Save the transitionContext for later.
     self.transitionContext = transitionContext;
-    
     [super startInteractiveTransition:transitionContext];
 }
 

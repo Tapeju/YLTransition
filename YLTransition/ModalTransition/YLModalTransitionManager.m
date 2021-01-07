@@ -26,8 +26,6 @@
 @property (nonatomic, strong) YLDirectionAbstractPanGesTureRecognizer *dismissGesture;
 @property (nonatomic, assign) BOOL interactiveEnable;
 
-@property (nonatomic, strong) YLDismissInteractiveTransition *dismissInteractive;
-
 /// 黑色背景遮罩
 @property (nonatomic, strong) UIView *dimmingView;
 @property (nonatomic, strong) UIView *presentationWrappingView;
@@ -147,17 +145,12 @@
             break;
     }
     __weak __typeof(self)weakSelf = self;
-    ges.dismissBlock = ^{
+    ges.beginBlock = ^{
         weakSelf.interactiveEnable = YES;
         [weakSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     };
     self.dismissGesture = ges;
     self.dismissGesture.agent = self;
-    _dismissInteractive = [[YLDismissInteractiveTransition alloc] initWithGestureRecognizer:self.dismissGesture];
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wundeclared-selector"
-    [self.dismissGesture addTarget:_dismissInteractive action:@selector(gestureRecognizeDidUpdate:)];
-#pragma clang diagnostic pop
     [self.presentedViewController.view addGestureRecognizer:self.dismissGesture];
 }
 
@@ -288,9 +281,8 @@
 
 /// 返回一个遵循UIViewControllerInteractiveTransitioning协议的类 用于实现手势驱动 dismiss
 - (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
-    if (self.interactiveEnable && self.dismissInteractive) {
-        self.dismissInteractive.direction = self.viewAlignment;
-        return self.dismissInteractive;
+    if (self.interactiveEnable && self.isDragable) {
+        return [[YLDismissInteractiveTransition alloc] initWithGestureRecognizer:self.dismissGesture directionForDragging:self.viewAlignment];;
     }
     return nil;
 }

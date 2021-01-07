@@ -13,23 +13,24 @@
 
 @property (nonatomic, weak) id<UIViewControllerContextTransitioning> transitionContext;
 @property (nonatomic, strong) YLDirectionAbstractPanGesTureRecognizer *gestureRecognizer;
-
-@property (nonatomic, assign) CGFloat panLocationStart;
+@property (nonatomic, assign) YLAlignment direction;
 
 @end
 
 @implementation YLDismissInteractiveTransition
 
-- (instancetype)initWithGestureRecognizer:(YLDirectionAbstractPanGesTureRecognizer *)gestureRecognizer {
+- (instancetype)initWithGestureRecognizer:(YLDirectionAbstractPanGesTureRecognizer *)gestureRecognizer directionForDragging:(YLAlignment)direction {
     self = [super init];
     if (self) {
         _gestureRecognizer = gestureRecognizer;
+        _direction = direction;
+        [_gestureRecognizer addTarget:self action:@selector(gestureRecognizeDidUpdate:)];
     }
     return self;
 }
 
 - (instancetype)init {
-    @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Use -initWithGestureRecognizer:" userInfo:nil];
+    @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Use -initWithGestureRecognizer:directionForDragging:" userInfo:nil];
 }
 
 - (void)dealloc {
@@ -45,28 +46,11 @@
 /// 处理手势
 - (void)gestureRecognizeDidUpdate:(YLDirectionAbstractPanGesTureRecognizer *)gesture {
     
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        [self panLocationStartForGesture:gesture];
-        
-    } else if (gesture.state == UIGestureRecognizerStateChanged) {
+     if (gesture.state == UIGestureRecognizerStateChanged) {
         [self updateInteractiveTransition:[self percentForGesture:gesture]];
         
     } else if (gesture.state == UIGestureRecognizerStateEnded || gesture.state == UIGestureRecognizerStateCancelled) {
         [self finishInteractiveGesture:gesture];
-    }
-}
-
-/// 设置手指开始滑动的位置
-- (void)panLocationStartForGesture:(YLDirectionAbstractPanGesTureRecognizer *)gesture {
-    
-    UIView *fromView = [_transitionContext viewForKey:UITransitionContextFromViewKey];
-    CGPoint location = [gesture locationInView:fromView.window];
-    
-    location = CGPointApplyAffineTransform(location, CGAffineTransformInvert(gesture.view.transform));
-    if (self.direction == YLAlignment_Bottom || self.direction == YLAlignment_Top || self.direction == YLAlignment_Center) {
-        self.panLocationStart = location.y;
-    } else {
-        self.panLocationStart = location.x;
     }
 }
 
@@ -77,17 +61,24 @@
     CGPoint location = [gesture locationInView:fromView.window];
     location = CGPointApplyAffineTransform(location, CGAffineTransformInvert(gesture.view.transform));
     
+    CGFloat panLocationStart;
+    if (self.direction == YLAlignment_Bottom || self.direction == YLAlignment_Top || self.direction == YLAlignment_Center) {
+        panLocationStart = gesture.panLocationStart.y;
+    } else {
+        panLocationStart = gesture.panLocationStart.x;
+    }
+    
     CGFloat animationRatio = 0;
     if (self.direction == YLAlignment_Bottom) {
-        animationRatio = (location.y - self.panLocationStart) / (CGRectGetHeight(fromView.bounds));
+        animationRatio = (location.y - panLocationStart) / (CGRectGetHeight(fromView.bounds));
     } else if (self.direction == YLAlignment_Left) {
-        animationRatio = (self.panLocationStart - location.x) / (CGRectGetWidth(fromView.bounds));
+        animationRatio = (panLocationStart - location.x) / (CGRectGetWidth(fromView.bounds));
     } else if (self.direction == YLAlignment_Right) {
-        animationRatio = (location.x - self.panLocationStart) / (CGRectGetWidth(fromView.bounds));
+        animationRatio = (location.x - panLocationStart) / (CGRectGetWidth(fromView.bounds));
     } else if (self.direction == YLAlignment_Top) {
-        animationRatio = (self.panLocationStart - location.y) / (CGRectGetHeight(fromView.bounds));
+        animationRatio = (panLocationStart - location.y) / (CGRectGetHeight(fromView.bounds));
     } else if (self.direction == YLAlignment_Center) {
-        animationRatio = (location.y - self.panLocationStart) / (CGRectGetHeight(fromView.bounds));
+        animationRatio = (location.y - panLocationStart) / (CGRectGetHeight(fromView.bounds));
     }
     
     return animationRatio;

@@ -38,12 +38,8 @@
 
 - (void)handle:(YLDirectionAbstractPanGesTureRecognizer *)ges {
     if (ges.state == UIGestureRecognizerStateBegan) {
-        if (self.presentBlock) {
-            self.presentBlock();
-        }
-        
-        if (self.dismissBlock) {
-            self.dismissBlock();
+        if (self.beginBlock) {
+            self.beginBlock();
         }
     }
 }
@@ -108,7 +104,7 @@
 #pragma mark - UIGestureRecognizerProtected
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
-    CGPoint panLocationStart = [touches.anyObject locationInView:self.view];
+    CGPoint panLocationStart = [touches.anyObject locationInView:self.view.window];
     self.panLocationStart = panLocationStart;
 }
 

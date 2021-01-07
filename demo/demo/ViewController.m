@@ -94,7 +94,7 @@
     YLDirectionAbstractPanGesTureRecognizer *interactiveTransitionRecognizer;
     interactiveTransitionRecognizer = [[YLLeftPanGesTureRecognizer alloc] init];
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
-    interactiveTransitionRecognizer.presentBlock = ^{
+    interactiveTransitionRecognizer.beginBlock = ^{
         PresentedViewController *vc = [[RightViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;
@@ -115,7 +115,7 @@
     YLDirectionAbstractPanGesTureRecognizer *interactiveTransitionRecognizer;
     interactiveTransitionRecognizer = [[YLRightPanGesTureRecognizer alloc] init];
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
-    interactiveTransitionRecognizer.presentBlock = ^{
+    interactiveTransitionRecognizer.beginBlock = ^{
         PresentedViewController *vc = [[LeftViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;
@@ -136,7 +136,7 @@
     YLDirectionAbstractPanGesTureRecognizer *interactiveTransitionRecognizer;
     interactiveTransitionRecognizer = [[YLBottomPanGesTureRecognizer alloc] init];
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
-    interactiveTransitionRecognizer.presentBlock = ^{
+    interactiveTransitionRecognizer.beginBlock = ^{
         PresentedViewController *vc = [[TopViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;
@@ -156,7 +156,7 @@
     YLDirectionAbstractPanGesTureRecognizer *interactiveTransitionRecognizer;
     interactiveTransitionRecognizer = [[YLTopPanGesTureRecognizer alloc] init];
     __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
-    interactiveTransitionRecognizer.presentBlock = ^{
+    interactiveTransitionRecognizer.beginBlock = ^{
         PresentedViewController *vc = [[BottomViewController alloc] init];
         YLModalTransitionManager *manager = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
         manager.presentGesture = weakInteractive;

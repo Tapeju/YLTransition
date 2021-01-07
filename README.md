@@ -3,23 +3,19 @@
 YLTransition是一个用于动画、非交互式和交互式ViewController Present和Dismiss的库
 
 <img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.46.59.gif?raw=true" width="80" style="display: block;
-  float: left"><img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.47.27.gif?raw=true" width="80" style="display: block;
+  float: left"> <img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.47.27.gif?raw=true" width="80" style="display: block;
+  float: left"> <img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.48.16.gif?raw=true" width="80" style="display: block;
+  float: left"> <img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.49.40.gif?raw=true" width="80" style="display: block;
+  float: left"> <img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.48.51.gif?raw=true" width="80" style="display: block;
+  float: left"><img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.49.59.gif?raw=true" width="80" style="display: block;
+  float: left"><img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.50.33.gif?raw=true" width="80" style="display: block;
   float: left">
 
-<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.48.16.gif?raw=true" width="80" style="display: block;
-  float: left">
 
-<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.49.40.gif?raw=true" width="80" style="display: block;
-  float: left">
 
-<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.48.51.gif?raw=true" width="80" style="display: block;
-  float: left">
 
-<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.49.59.gif?raw=true" width="80" style="display: block;
-  float: left">
 
-<img src="https://github.com/Tapeju/YLTransition/blob/main/github/2020-12-29%2016.50.33.gif?raw=true" width="80" style="display: block;
-  float: left">
+
 
 ## 使用
 
@@ -32,7 +28,7 @@ animator.animationType = YLAnimationTypeTransformCenter;
 [self presentViewController:presentedVc animated:YES completion:nil];
 ```
 
-在PresentedViewController 中需加入一下代码, 用于自适应弹出控制器的宽高
+在PresentedViewController 中需加入以下代码, 用于自适应弹出控制器的宽高
 
 ```objective-c
 - (void)viewDidLoad {
@@ -56,7 +52,7 @@ animator.animationType = YLAnimationTypeTransformCenter;
 
 ### interactive transition
 
-####Dismiss
+#### Dismiss
 
 只需要一行代码即可实现interactrive dismiss
 
@@ -83,7 +79,8 @@ animator.dragable = YES;
      PresentedViewController *vc = [[RightViewController alloc] init];
      YLModalTransitionManager *animator = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
      animator.presentGesture = weakInteractive;
-     animator.animationType = YLAnimationTypeTranslationRight;
+     animator.viewAlignment = YLAlignment_Right;
+     animator.animationType = YLAnimationTypeTranslation;
      animator.dragable = YES;
      [weakSelf presentViewController:vc animated:YES completion:nil];
   };
@@ -131,8 +128,7 @@ YLTransition内部的动画效果如果无法满足你的个性化需求, 可用
     pod "YLTransition"
     ```
     
-- 使用代码
- 将YLTransition 文件夹放入你的项目即可
+- 将YLTransition 文件夹放入你的项目即可
 
 ## 作者
 
