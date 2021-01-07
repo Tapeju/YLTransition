@@ -20,6 +20,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 请使用该属性代替delegate, delegate属性内部使用
 @property (nonatomic, weak) id<UIGestureRecognizerDelegate> agent;
 
+/// 手势是否正在拖拽中
+@property (nonatomic, assign) BOOL interactionInProgress;
+
 /// 子类内部使用
 @property (nonatomic, strong, nullable) NSNumber *isFail;
 

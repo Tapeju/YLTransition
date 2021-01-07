@@ -24,7 +24,6 @@
 @interface YLModalTransitionManager () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) YLDirectionAbstractPanGesTureRecognizer *dismissGesture;
-@property (nonatomic, assign) BOOL interactiveEnable;
 
 /// 黑色背景遮罩
 @property (nonatomic, strong) UIView *dimmingView;
@@ -102,7 +101,6 @@
         [self.dimmingView removeFromSuperview];
         self.dimmingView = nil;
     }
-    self.interactiveEnable = NO;
 }
 
 /// 用于在过渡动画呈现结束时，设置被呈现的视图在容器视图中的位置
@@ -124,7 +122,6 @@
 
 #pragma mark - Private
 - (void)dimmingViewTapped:(UITapGestureRecognizer *)sender {
-    self.interactiveEnable = NO;
     [self.presentingViewController dismissViewControllerAnimated:YES completion:NULL];
 }
 
@@ -146,7 +143,6 @@
     }
     __weak __typeof(self)weakSelf = self;
     ges.beginBlock = ^{
-        weakSelf.interactiveEnable = YES;
         [weakSelf.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     };
     self.dismissGesture = ges;
@@ -281,7 +277,7 @@
 
 /// 返回一个遵循UIViewControllerInteractiveTransitioning协议的类 用于实现手势驱动 dismiss
 - (nullable id <UIViewControllerInteractiveTransitioning>)interactionControllerForDismissal:(id <UIViewControllerAnimatedTransitioning>)animator {
-    if (self.interactiveEnable && self.isDragable) {
+    if (self.dismissGesture.interactionInProgress && self.isDragable) {
         return [[YLDismissInteractiveTransition alloc] initWithGestureRecognizer:self.dismissGesture directionForDragging:self.viewAlignment];;
     }
     return nil;

@@ -27,6 +27,7 @@
     [super touchesMoved:touches withEvent:event];
 
     if (!self.scrollview) {
+        self.interactionInProgress = YES;
         return;
     }
 
@@ -36,14 +37,17 @@
     CGPoint prevPoint = [touches.anyObject previousLocationInView:self.view];
 
     if (self.isFail) {
+        self.interactionInProgress = YES;
         if (self.isFail.boolValue) {
             self.state = UIGestureRecognizerStateFailed;
+            self.interactionInProgress = NO;   
         }
         return;
     }
     
     CGPoint point = [touches.anyObject locationInView:self.scrollview];
     if (![self.scrollview pointInside:point withEvent:event]) {
+        self.interactionInProgress = YES;
         return;
     }
     
@@ -51,11 +55,14 @@
     CGFloat leftHorizonOffset = -self.scrollview.contentInset.left - self.scrollview.contentInset.right + width;
     if ((fabs(velocity.x) > fabs(velocity.y)) && (nowPoint.x < prevPoint.x) && (self.scrollview.contentOffset.x >= leftHorizonOffset)) {
         self.isFail = @NO;
+        self.interactionInProgress = YES;
     } else if (self.scrollview.contentOffset.x <= leftHorizonOffset) {
         self.state = UIGestureRecognizerStateFailed;
         self.isFail = @YES;
+        self.interactionInProgress = NO;
     } else {
         self.isFail = @NO;
+        self.interactionInProgress = YES;
     }
 }
 
