@@ -27,16 +27,18 @@
 - (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesMoved:touches withEvent:event];
 
-    if (!self.scrollview) {
-        self.interactionInProgress = YES;
-        return;
-    }
-
     if (self.state == UIGestureRecognizerStateFailed) return;
     CGPoint velocity = [self velocityInView:self.view];
     CGPoint nowPoint = [touches.anyObject locationInView:self.view];
     CGPoint prevPoint = [touches.anyObject previousLocationInView:self.view];
 
+    if (!self.scrollview) {
+        if (((fabs(velocity.x) < fabs(velocity.y)) && velocity.y > 0)) {
+            self.interactionInProgress = YES;
+        }
+        return;
+    }
+    
     if (self.isFail) {
         self.interactionInProgress = YES;
         if (self.isFail.boolValue) {

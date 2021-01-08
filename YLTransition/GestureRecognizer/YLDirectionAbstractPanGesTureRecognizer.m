@@ -42,6 +42,10 @@
             self.beginBlock();
         }
     }
+    
+    if (ges.state == UIGestureRecognizerStateEnded || ges.state == UIGestureRecognizerStateCancelled || ges.state == UIGestureRecognizerStateFailed) {
+        self.interactionInProgress = NO;
+    }
 }
 
 #pragma mark - private
