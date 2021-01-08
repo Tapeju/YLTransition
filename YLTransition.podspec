@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
     s.name         = "YLTransition"
-    s.version      = "1.1.0"
+    s.version      = "1.1.1"
     s.summary      = "自定义转场动画"
     s.description  = <<-DESC
                     几行条码即可添加自定义转场动画

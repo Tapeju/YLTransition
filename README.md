@@ -75,7 +75,7 @@ animator.dragable = YES;
   YLDirectionAbstractPanGesTureRecognizer *interactiveTransitionRecognizer = [[YLLeftPanGesTureRecognizer alloc] init];
   __weak __typeof(interactiveTransitionRecognizer)weakInteractive = interactiveTransitionRecognizer;
 
-  interactiveTransitionRecognizer.presentBlock = ^{
+  interactiveTransitionRecognizer.beginBlock = ^{
      PresentedViewController *vc = [[RightViewController alloc] init];
      YLModalTransitionManager *animator = [[YLModalTransitionManager alloc] initWithPresentedViewController:vc presentingViewController:weakSelf];
      animator.presentGesture = weakInteractive;
