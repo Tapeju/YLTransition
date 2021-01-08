@@ -72,13 +72,13 @@
     [self.containerView addSubview:self.dimmingView];
     
     id<UIViewControllerTransitionCoordinator> transitionCoordinator = self.presentingViewController.transitionCoordinator;
-    if (!self.zoomScale) {
-        self.zoomScale = 1;
-    }
+    
     self.dimmingView.alpha = 0.f;
     [transitionCoordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> context) {
         self.dimmingView.alpha = 0.4f;
-        self.presentingViewController.view.transform = CGAffineTransformScale(self.presentingViewController.view.transform, self.zoomScale, self.zoomScale);
+        if (self.zoomScale) {
+            self.presentingViewController.view.transform = CGAffineTransformScale(self.presentingViewController.view.transform, self.zoomScale, self.zoomScale);
+        }
     } completion:NULL];
 }
 
@@ -320,6 +320,7 @@
                 break;
                 
             case YLAnimationTypeCrossDissolve:
+                /// 淡入淡出
                 _animator = [[YLCrossDissolveAnimator alloc] init];
                 break;
             default:

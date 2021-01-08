@@ -9,8 +9,6 @@
 #ifndef ModalAnimationType_h
 #define ModalAnimationType_h
 
-
-/// 需要增加动画样式可以增加这个枚举, 然后实现具体的动画效果即可
 typedef NS_ENUM(NSUInteger, YLTransitionAnimationType) {
     /// 从底部平移
     YLAnimationTypeTranslation,
