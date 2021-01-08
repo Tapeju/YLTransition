@@ -10,12 +10,14 @@
 #define ModalAnimationType_h
 
 typedef NS_ENUM(NSUInteger, YLTransitionAnimationType) {
-    /// 从底部平移
+    /// 平移
     YLAnimationTypeTranslation,
-    /// 从中间缩放
+    /// 中间缩放
     YLAnimationTypeTransformCenter,
     /// 淡入淡出
     YLAnimationTypeCrossDissolve,
+    /// 抽屉
+    YLAnimationTypeSlide,
 };
 
 typedef NS_ENUM(NSUInteger, YLAlignment) {

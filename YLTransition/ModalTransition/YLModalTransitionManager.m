@@ -20,6 +20,7 @@
 #import "YLBottomPanGesTureRecognizer.h"
 #import "UIView+YLEffect.h"
 #import "YLTransitionAnimationType.h"
+#import "YLSlideAnimator.h"
 
 @interface YLModalTransitionManager () <UIGestureRecognizerDelegate>
 
@@ -323,6 +324,12 @@
                 /// 淡入淡出
                 _animator = [[YLCrossDissolveAnimator alloc] init];
                 break;
+                
+            case YLAnimationTypeSlide:
+                /// 抽屉
+                _animator = [[YLSlideAnimator alloc] init];
+                break;
+                
             default:
                 _animator = [[YLAbstractAnimator alloc] init];
                 break;

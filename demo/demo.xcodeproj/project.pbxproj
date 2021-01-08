@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E644AD0325A8076700E72F25 /* YLSlideAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = E644AD0225A8076700E72F25 /* YLSlideAnimator.m */; };
 		E6672D6B2595C7F70030A2A0 /* YLAbstractAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = E6672D4C2595C7F60030A2A0 /* YLAbstractAnimator.m */; };
 		E6672D6C2595C7F70030A2A0 /* YLTransformAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = E6672D4D2595C7F60030A2A0 /* YLTransformAnimator.m */; };
 		E6672D6D2595C7F70030A2A0 /* YLTranslationAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = E6672D4E2595C7F60030A2A0 /* YLTranslationAnimator.m */; };
@@ -56,6 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E644AD0125A8076700E72F25 /* YLSlideAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YLSlideAnimator.h; sourceTree = "<group>"; };
+		E644AD0225A8076700E72F25 /* YLSlideAnimator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YLSlideAnimator.m; sourceTree = "<group>"; };
 		E6672D492595C7F60030A2A0 /* YLTransitionAnimationType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YLTransitionAnimationType.h; sourceTree = "<group>"; };
 		E6672D4C2595C7F60030A2A0 /* YLAbstractAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLAbstractAnimator.m; sourceTree = "<group>"; };
 		E6672D4D2595C7F60030A2A0 /* YLTransformAnimator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YLTransformAnimator.m; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 				E6672D4D2595C7F60030A2A0 /* YLTransformAnimator.m */,
 				E6672D4F2595C7F60030A2A0 /* YLCrossDissolveAnimator.h */,
 				E6672D532595C7F60030A2A0 /* YLCrossDissolveAnimator.m */,
+				E644AD0125A8076700E72F25 /* YLSlideAnimator.h */,
+				E644AD0225A8076700E72F25 /* YLSlideAnimator.m */,
 			);
 			path = Animator;
 			sourceTree = "<group>";
@@ -445,6 +450,7 @@
 				E6672D722595C7F70030A2A0 /* YLLeftPanGesTureRecognizer.m in Sources */,
 				E6DFDF52259488BB00E6245C /* BottomViewController.m in Sources */,
 				E6DFDF1E2594832200E6245C /* PresentedViewController.m in Sources */,
+				E644AD0325A8076700E72F25 /* YLSlideAnimator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
